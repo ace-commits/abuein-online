@@ -1,10 +1,14 @@
 import React from 'react';
+import Header from './components/Header'
+import Footer from './components/Footer'
 const App = () => {
   return (
-    <div className="App">
-      <h1>Abu Ein Technologies: Abu Ein Online</h1>
-    </div>
-  );
+      <>
+      <Header/>
+      <main><h1>Abu Ein Technologies: Abu Ein Online</h1>
+      </main>
+      <Footer/>
+      </>
+      );
 }
-
 export default App;
