@@ -25,4 +25,5 @@ This is a README.md FILE
 ### HomeScreen Product Listing
 
 1. Put your product images into the public folder. This is for dummy data, we are not going to fetch from the database for now.
+   1. Hello
 2.
