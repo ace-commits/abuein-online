@@ -2,12 +2,15 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import Header from './components/Header'
 import Footer from './components/Footer'
+import HomeScreen from './screens/HomeScreen';
 
 const App = () => {
   return (
       <>
       <Header/>
-      <main className = "py-3"><Container><h1>Abu Ein Technologies: Abu Ein Online</h1></Container>
+      <main className = "py-3">
+        <Container><HomeScreen/>
+        </Container>
       </main>
       <Footer/>
       </>
