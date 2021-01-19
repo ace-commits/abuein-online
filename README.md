@@ -10,7 +10,7 @@ This is a README.md FILE
 4. Import the header and footer components into App.js
 5. When a component is exported as "export default", you don't need to wrap it in curly braces when you import the component in App.js
 6. <main> tag specifies the main content of a document
-7. React bootstrap: CSS framework.Easier to work with compared to material UI. To create a navbar in material UI, you will have to bring in many components
+7. React bootstrap: CSS framework. Easier to work with compared to material UI. To create a navbar in material UI, you will have to bring in many components
 8. To install React bootstrap, use bootswatch.com => bootstrap customized files. Download the boostrap.min.css file for Lux, and put it in the src folder
 9. Import the bootstrap.min.css in the index.js file
 10. Now install react boostrap, npm i react-boostrap
@@ -39,4 +39,9 @@ This is a README.md FILE
 
 ### Rating Component
 
-1.
+1. The ratings component is imported into the product.js component=> each product has a ratings.
+2. Importing a component from the same folder => ./Rating => import Rating from './Rating'
+3. **text = {`${product.numReviews} reviews`}** => here we are combining the reviews string and the product.numReviews JS variable. We used the curly braces for the backticks.
+4. If the ratings value is greater or equal to 1, then show a full star. Else, If it is greater than or equal to 0.5, show a half star. Else, show an empty star
+   **<i className = {value >=1 ? 'fas fa-star' : value >= 0.5 ? 'fas fa-star-half-alt' : 'far fa-star'}></>**
+5. **HTML <span> tag**: This is an inline container that is used in order to markup a part of the text or a part of the document
