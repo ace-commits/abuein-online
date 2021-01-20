@@ -1,3 +1,11 @@
 main {
 	min-height: 40rem;
 }
+/* Giving H3 one rem padding on the top and bottom */
+h3 {
+	padding: 1 rem 0;
+}
+/* Span in the rating component */
+.rating span {
+	margin: 0.1rem;
+}
