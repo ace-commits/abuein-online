@@ -2,7 +2,7 @@
 
 This is a README.md FILE
 
-# Frontend Part 1
+## Frontend Part 1
 
 ### React-Bootstrap Setup, Header & Footer Components
 
@@ -91,4 +91,4 @@ This is a README.md FILE
    8. use Image alt, in order to give the image alternate text if it cannot be displayed
    9. For the button, we did: disabled = {product.countInStock === 0}, this means that you will disable the button if the product is no longer in stock
 
-# Backend Part 1
+## Backend Part 1
