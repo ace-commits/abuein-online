@@ -198,3 +198,9 @@ This is a README.md FILE
 9. We use backticks in JS to include variables into strings
 10. Make sure that .env is in gitignore, because it can contain sensitive information, like paypal key or credit card information
     and you don't want it to be pushed to github.
+
+## Making the webapp RTL for arabic support
+
+1. Use the webpack-rtl-plugin, which will generate a different CSS file on the fly that is RTL compatible.
+2. Instead of create two CSS files, you can author the LTR version and this plugin will automatically create the RTL counterpart for you
+3.
