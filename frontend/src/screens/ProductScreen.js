@@ -1,14 +1,22 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import { Col, Row, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Rating from '../components/Rating'
-import products from '../products'
 
 const ProductScreen = ({ match }) => {
-    //here, we want to find the product with the id that matches the URL. 
-    // For detailed steps, once we click on the product in the homescreen, we will be directed to ProductScreen.js component
-    // The component knows the product after using the URL and we use the find function to find the product JSON object 
-    const product = products.find((p => p._id === match.params.id))
+    
+    // the intial state of a product is an empty object
+    const [product, setProduct] = useState({})
+
+    useEffect(()=>{
+        const fetchProduct = async() =>{
+            const { data } = await axios.get(`/api/products/${match.params.id}`)
+            setProduct(data)
+        }
+        fetchProduct()
+    },[match]) 
+
     /*  For each product, we will create a row. 
         The row has three columns: Image, ListGroup, and a Card
     */
