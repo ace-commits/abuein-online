@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import Rating from './Rating'
 import { Link } from 'react-router-dom'
-const Product = ({ product }) => {
+const Product = ({ product, isRTLProduct }) => {
     return (
         <Card className = "my-3 p-3 rounded">
             {/* The image of the card */}
@@ -12,7 +12,7 @@ const Product = ({ product }) => {
             {/* The body of the card */}
             <Card.Body>
             <Link to  = {`/product/${product._id}`}>
-                <Card.Title as = 'div'> <strong>{product.name}</strong></Card.Title>
+                <Card.Title as = 'div'> <strong>{isRTLProduct ? product.arabic : product.name}</strong></Card.Title>
             </Link>
             <Card.Text as = 'div'>
                 <Rating value = {product.rating} text = {`${product.numReviews} reviews`} />

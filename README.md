@@ -2,7 +2,7 @@
 
 This is a README.md FILE
 
-## Frontend Part 1
+## Frontend
 
 ### React-Bootstrap Setup, Header & Footer Components
 
@@ -91,7 +91,7 @@ This is a README.md FILE
    8. use Image alt, in order to give the image alternate text if it cannot be displayed
    9. For the button, we did: disabled = {product.countInStock === 0}, this means that you will disable the button if the product is no longer in stock
 
-## Integrating Backend
+## Integrating Backend and DB
 
 ### Frontend/Backend Workflow Explanation
 
@@ -199,8 +199,142 @@ This is a README.md FILE
 10. Make sure that .env is in gitignore, because it can contain sensitive information, like paypal key or credit card information
     and you don't want it to be pushed to github.
 
+### ES Modules
+
+1. Make sure that you have the newest node version. To get it: https://phoenixnap.com/kb/update-node-js-version, update with NPM
+2. add "type": "module" in root package.json
+3. If you are importing files with ES modules, you need to have a .js
+4. using ES modules, you can do: import express from 'express'
+5. In products.js, change it to export default products
+6. This way we are matching between the frontend and backend in the way we import stuff.
+
+### MongoDB
+
+1. MongoDB is a NoSQL database and instead of tables, we use collections of documents which are basically JSON objects
+2. MongoDB Atlas a cloud version of DB, you don't have to install it on the system, this even allows you to share the database
+3. MongoDB Compass => desktop program that allows us to see our data and change it. It is basically a GUI that you can use to
+   connect to your database and make modifications there. You need to put in your connection string here to connect to the Atlas cluster
+4. We need to create a user in Database Access. User privilages=> user can read and write to any database.
+5. Allow Access from AnyWhere in Network Access (however, for more security, you can put in a fixed IP address)
+6. Create a cluster and connect it with Compass
+7. Add the application connection URL to the env file
+8. Next, we will use Mongoose, which is an object data mapper => layer that allows us to interact with our DB easily.
+
+### Connecting to the database
+
+1. Mongoose=> object modelling for node.js, allows us to create a schema for our different resources in the database
+2. db.js is database connection file in the config folder
+3. connectDB is asynchronous because it will always return a promise when we run .connect or other functions
+4. the second argument of .connect is a set of options:
+   1. useUnifiedTopology: true
+   2. useNewUrlParser: true
+   3. useCreateIndex: true
+5. import connectDB in the server.js
+
+### Modeling our data
+
+1. create a folder called models in the backend folder
+2. userModel.js, productModel.js, orderModel.js
+3. in each model file, we want to import mongoose and create a schema
+4. userModel.js:
+
+   1. const userSchema = mongoose.Schema({
+      name: {
+      type: String,
+      required: true
+      },
+      email: {
+      type: String,
+      required: true,
+      unique: true
+      }
+      })
+
+   2. in order to make a field in the schema required, make the field an object with required set to true.
+   3. in order to make a field in the schema unique, means you are not allowed to have two accounts with the same email for example, you need to set unique: true
+   4. for isAdmin, this will be a boolean (whether a user is an admin or not). You need to set its default to false, so when a user registers they are not an admin.
+   5. You can pass in another argument to mongoose
+   6. To create the model => mongoose.model('User', userSchema)
+
+5. productModel.js:
+   1. we create a user object to know which user added the product
+   2. the type will be mongoose.Schema.Types.ObjectId, because the id of the user will be present
+   3. ref: 'User', means to reference the User model (the id will be a user Id basically)
+   4. We put the review schema in this file, however, before the ratings, we put the reviewSchema as an array above the ratings object
+
+### Data Seeder Script:
+
+1. After preparing the data, we are going to seed the database with the data (this means that we will import the data to the DB)
+2. When data is entered into mongoDB, an '\_id' is created
+3. As we are entering the sample data, we will use bcrypt to encrypt user passwords
+4. npm i bcryptjs (use bcryptjs, not bcrypt)
+5. normally we want to hash passwords asynchoronosly, but because we are importing users, we are going to do it synch.
+6. create a filer called seeder.js, which will easily import to the DB the data. The seeder will also delete all the data that was already populated
+7. because .deleteMany() returns a promise, we will have to put await infront of it
+8. We use the map function, which will create a new array of all the products, however, for each product we will add the admin user as the creator of the product. We use the spread operator ... => this means that everything in the product object will remain the same except for the user
+
+   const sampleProducts = products.map((product) => {
+   return { ...product, user: adminUser };
+   });
+
+9. Let's add a script in the package.json for this.
+
+### Fetching data from the database
+
+1. create a folder called routes
+2. create a file productRoutes.js. This will be the route to the products
+3. const router = express.Router
+   - router.get('/', async (req,res))
+4. we are going to **mount** the productRoutes.js in the server.js file:
+   - app.use('/api/products', productRoutes)
+5. in productRoutes.js, import the Product model and use the find method to retrieve everythig
+   - const products = await Product.find({});
+6. we are going to use express-async-handler, this is a simple middleware for handling exceptions inside of async express routes
+7. to use the module in (6), you just have to wrap it within the route
+
+### Getting started with Postman
+
+1. create a new collection, call it abuein-online and give it a description: abuein-online e-commerce API
+2. create a folder in the collection and call it products, this folder has all routes that has to do with products
+3. add request to the product folder: GET /api/products
+4. Settings -> Manage Environments -> abuein-online Env -> create a global variable of URL -> value is http://localhost:5000
+5. To use an Env variable, you should use {{URL}}/api/products
+6. if you do, GET api/products/1, we receive an 500 internal server error with actual html, however, we only want to server json from our backend and not html, we need to create a custom error handler
+
+### Custom Error Handling
+
+1. We only want to send out JSON messages not htmls
+2. **Middleware: Middleware functions are functions that have access to the request object ( req ), the response object ( res ), and the next middleware function in the application's request-response cycle. The next middleware function is commonly denoted by a variable named next.**
+   1. **next()**:
+      - If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging
+   2. ![middleware](Images/1_fbe04fcynkBuLo_CADxxHQ.png)
+3. app.use((req, res, next)=>) => next is used to move on to the next piece of middleware
+4. You can create custom middleware to do a lot of things
+5. We want to create error middleware:
+   - app.use((err, req, res, next)=> {
+     // if it is equal to 200, make it 500 error
+     const statusCode = res.statusCode === 200 ? 500 : res.statusCode
+     res.status(statusCode)
+     res.json({
+     message:err.message,
+     //if we are in production, the stack is null, else, the stack is err.stack
+     stack: process.env.NODE_ENV === 'production' ? null : err.stack
+     })
+     })
+6. create a middleware folder in the backend folder
+
 ## Making the webapp RTL for arabic support
+
+#### Follow this link for more info: https://dev.to/redraushan/is-your-react-app-rtl-language-ready-1009#chapter-3
 
 1. Use the webpack-rtl-plugin, which will generate a different CSS file on the fly that is RTL compatible.
 2. Instead of create two CSS files, you can author the LTR version and this plugin will automatically create the RTL counterpart for you
-3.
+3. STEPS:
+   1. You need to eject by running npm run eject:
+      - create-react-app encapsulates (abstracts) all the npm modules that it is using internally
+      - It does this so package.json is clean and simple
+      - However,the RTL package will interact with these hidden packages and needs to know them
+      - Therefore, npm run eject will unabstract these packages and now you can see everything in the project's package.json
+   2. npm install webpack-rtl-plugin @babel/plugin-transform-react-jsx-source --save-dev
+   3. Go to config/webpack.config.js:
+   4. continue with the tutorial linked above

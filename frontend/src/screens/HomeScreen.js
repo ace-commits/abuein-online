@@ -2,7 +2,9 @@ import React , { useState, useEffect } from 'react'
 import Product from '../components/Product'
 import { Row, Col } from 'react-bootstrap'
 import axios from 'axios'
-const HomeScreen = () => {
+
+
+const HomeScreen = ({ isRTLProp }) => {
     //intializing state using useState hook 
     const [products, setProducts] = useState([])
 
@@ -16,14 +18,16 @@ const HomeScreen = () => {
         }
         fetchProducts()
     }, [])
+    
     return (
         <>
-            <h1> Latest Products </h1>
+            <h1> {isRTLProp ? 'آخر المنتجات' : 'Latest Products' }</h1>
+            
             <Row>
                 {/* For each product, we will create a column with a product component */}
                 {products.map(product => ( 
                     <Col key = {product._id} sm = {12} md = {6} lg = {4} xl = {3} >
-                        <Product product = {product}/>
+                        <Product product = {product} isRTLProduct = {isRTLProp}/>
                     </Col>
                 ))}
             </Row>
