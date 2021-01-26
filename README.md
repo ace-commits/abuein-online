@@ -1,6 +1,6 @@
 # abuein-online
 
-This is a README.md FILE
+This is a guide of the e-commerce platform from start to end
 
 ## Frontend
 
