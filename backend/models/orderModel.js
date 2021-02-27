@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+//this is the schema of each order
 const orderSchema = mongoose.Schema(
 	{
 		// we will also have a user connected to the schema (this is the customer/ user who did the order)

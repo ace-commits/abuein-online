@@ -323,6 +323,49 @@ This is a guide of the e-commerce platform from start to end
      })
 6. create a middleware folder in the backend folder
 
+### An Overview of Redux
+
+1. Two kinds of state:
+   1. Component level state: has to do with a component
+   2. Global level state (application state - cloud hovering over app):
+      1. products, you want them available to all components
+      2. user state for authentication and login
+2. State is changed through reducers (reducer functions), these are functions used by components that accept actions in order to manipulate state
+3. Actions are objects that represent the intention to change a piece of state
+4. Redux is not exclusive to React, but is very popular with React
+
+### Create a redux store
+
+1. Install redux in the frontend
+2. redux thunk: make asynchronous requests in our action creators (middleware piece)
+3. in the src, create a file called store.js
+4. We import combineReducers because we have multiple reducers and each reducer will handle a certain functionality
+5. const reducer = combineReducer({})
+   initialState= {}
+   const middleware = [thunk]
+   createStore(reducer, initialState, composeWithDevTools(applyMiddleWare([...middleware])))
+6. The Provider makes the Redux store available to any nested components
+
+### Product List Reducer and Action
+
+1. For each resource, we will create a reducer
+2. A reducer takes two things:
+   1. Initial state (which is an object)
+   2. Action (we will dispatch an action to the reducer): the action is an object with a type and may contain a payload (data), such as a list of our products
+3. Create file called productReducer.js
+   1. Create a product list reducer. This will handle the state for the product list.
+   2. The initial state is a an empty products array
+   3. Create switch cases switch(action.type). There are three different types that we look for:
+      1. product list request (fetch request):
+         - case 'PRODUCT_LIST_REQUEST': return { loading: true, products:[] }. We set loading to true, so that when a request is made, we tell the app that we are currently fetching/loading data. Products is an empty array because we are still in the process of fetching and the products have not been completley fetched yet.
+      2. request success (successful response/we got the data):
+         - case 'PRODUCT_LIST_SUCCESS': return { loading: false, products: action.payload }. Loading is set to false because the request is done (fetching is done).
+      3. request fails:
+         - case 'PRODUCT_LIST_FAIL': return { loading: false, error: action.payload}
+      4. default: return state
+   4. In order to use this reducer, we will have to add it to our store. So go to store.js and import the product list reducer and add it to the reducer object => productList: productListReducer
+   5. It is better to use constants for any reducer cases. So create a folder called constants and in the folder create productConstants.js
+
 ## Making the webapp RTL for arabic support
 
 #### Follow this link for more info: https://dev.to/redraushan/is-your-react-app-rtl-language-ready-1009#chapter-3

@@ -58,6 +58,7 @@ const productSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		//an array of review objects
 		reviews: [reviewSchema],
 		// this is the average rating for the product
 		rating: {
